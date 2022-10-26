@@ -5,25 +5,24 @@ import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Elements } from '@stripe/react-stripe-js';
+import { stripePromise } from './utils/stripe/stripe.utils';
 
-import { CartProvider } from './contexts/cart.context';
-import { CategoriesProvider } from './contexts/categories.context';
-import { store } from './store/store';
+// import { CartProvider } from './contexts/cart.context';
+
+import { store, persistor } from './store/store';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        {/* <UserProvider> */}
-        <CategoriesProvider>
-          <CartProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter>
+          <Elements stripe={stripePromise} >
             <App />
-          </CartProvider>
-        </CategoriesProvider>
-
-        {/* </UserProvider> */}
-
-      </BrowserRouter>
+          </Elements>
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
