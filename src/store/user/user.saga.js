@@ -4,7 +4,7 @@ import { USER_ACTION_TYPES } from './user.type';
 
 import {
     signInSuccess,
-    signInFailure,
+    signInFailed,
     signUpSuccess,
     signUpFailed,
     signOutSuccess,
@@ -30,7 +30,7 @@ export function* getSnapshotFromUserAuth(userAuth, additionalDetails) {
 
         yield put(signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
     } catch (error) {
-        yield put(signInFailure(error));
+        yield put(signInFailed(error));
     }
 }
 
@@ -40,7 +40,7 @@ export function* signInWithGoogle() {
 
         yield call(getSnapshotFromUserAuth, user);
     } catch (error) {
-        yield put(signInFailure(error));
+        yield put(signInFailed(error));
     }
 }
 
@@ -53,7 +53,7 @@ export function* signInWithEmail({ payload: { email, password } }) {
         );
         yield call(getSnapshotFromUserAuth, user);
     } catch (error) {
-        yield put(signInFailure(error));
+        yield put(signInFailed(error));
     }
 }
 
@@ -63,7 +63,7 @@ export function* isUserAuthenticated() {
         if (!userAuth) return;
         yield call(getSnapshotFromUserAuth, userAuth);
     } catch (error) {
-        yield put(signInFailure(error));
+        yield put(signInFailed(error));
     }
 }
 
